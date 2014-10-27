@@ -10,3 +10,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+.gradle/
+.idea/
+*.iml
+spring-batch-index/data/
+spring-batch-index/build/
+spring-batch-index/.gradle/

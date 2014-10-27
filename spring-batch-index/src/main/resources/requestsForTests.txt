@@ -1,0 +1,2 @@
+# Number of Gare in Index
+curl -XGET 'http://localhost:9200/quicky/gare/_count'
