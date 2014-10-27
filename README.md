@@ -9,7 +9,7 @@ Pre-requisites :
 
 
 # Create the index and populate it
+```shell
 cd spring-batch-index
 gradle bootRun
-
-
+```
