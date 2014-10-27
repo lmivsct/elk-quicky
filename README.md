@@ -1,7 +1,7 @@
 elk-quicky
 ==========
 
-elk-quicky
+Simple application used as a support for a quicky about elastic search using spring batch as indexing orchestrator
 
 Pre-requisites :
 - Installation of gradle (2.1)
