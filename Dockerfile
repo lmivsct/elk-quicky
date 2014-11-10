@@ -5,8 +5,6 @@ MAINTAINER lmivsct, https://github.com/lmivsct
 RUN echo '#!/bin/sh\nexit 101' > /usr/sbin/policy-rc.d && \
     chmod +x /usr/sbin/policy-rc.d
 
-ENV KIBANA_VERSION 3.1.1
-# ENV NGINX_VERSION 1.7.5-1~wheezy
 
 # Install Required Dependancies
 RUN \
@@ -27,7 +25,7 @@ RUN \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Kibana and Configure Nginx
-ADD https://download.elasticsearch.org/kibana/kibana/kibana-$KIBANA_VERSION.tar.gz /opt/
+ADD https://download.elasticsearch.org/kibana/kibana/kibana-3.1.1.tar.gz /opt/
 ADD kibana.conf /etc/nginx/sites-available/
 RUN \
   mkdir -p /var/www && \
@@ -37,18 +35,15 @@ RUN \
   rm /etc/nginx/sites-enabled/default && \
   ln -s /etc/nginx/sites-available/kibana.conf \
     /etc/nginx/sites-enabled/kibana.conf && \
-  cd /opt && tar xzf kibana-$KIBANA_VERSION.tar.gz && \
-  ln -s /opt/kibana-$KIBANA_VERSION /var/www/kibana && \
+  cd /opt && tar xzf kibana-3.1.1.tar.gz && \
+  ln -s /opt/kibana-3.1.1 /var/www/kibana && \
   sed -i 's/9200"/"+ window.location.port/g' /var/www/kibana/config.js && \
-  rm kibana-$KIBANA_VERSION.tar.gz
+  rm kibana-3.1.1.tar.gz
 
 ADD supervisord.conf /etc/supervisor/conf.d/
-
-VOLUME ["/etc/logstash/conf.d"]
-VOLUME ["/opt/kibana-3.1.1/app/dashboards"]
-VOLUME ["/etc/nginx"]
+ADD logstash.conf  /etc/logstash/conf.d/logstash.conf
 
 EXPOSE 80 443
+EXPOSE 9200
 
-CMD ["/usr/bin/supervisord","console"]
-CMD ["/bin/bash"]
+CMD ["/usr/bin/supervisord"]
