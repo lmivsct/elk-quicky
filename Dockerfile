@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
-MAINTAINER blacktop, https://github.com/blacktop
+MAINTAINER lmivsct, https://github.com/lmivsct
 
 RUN echo '#!/bin/sh\nexit 101' > /usr/sbin/policy-rc.d && \
     chmod +x /usr/sbin/policy-rc.d
@@ -50,4 +50,5 @@ VOLUME ["/etc/nginx"]
 
 EXPOSE 80 443
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord","console"]
+CMD ["/bin/bash"]
