@@ -42,8 +42,11 @@ RUN \
 
 ADD supervisord.conf /etc/supervisor/conf.d/
 ADD logstash.conf  /etc/logstash/conf.d/logstash.conf
+ADD elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+ADD logging.yml /usr/share/elasticsearch/config/logging.yml
 
 EXPOSE 80 443
 EXPOSE 9200
+EXPOSE 9300
 
 CMD ["/usr/bin/supervisord"]
