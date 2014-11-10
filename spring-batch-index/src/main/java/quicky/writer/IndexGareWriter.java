@@ -9,13 +9,13 @@ import org.elasticsearch.client.Client;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import quicky.client.ElkClientFactoryBean;
 import quicky.model.Gare;
 
 
 public class IndexGareWriter implements ItemWriter<Gare> {
 
-
-    @Autowired
+    
     private Client elkClient;
 
     @Override
@@ -23,6 +23,7 @@ public class IndexGareWriter implements ItemWriter<Gare> {
         System.out.println("Add Gares in index (" + items.size() + ")...");
 
         final BulkRequestBuilder bulkRequest = elkClient.prepareBulk();
+        bulkRequest.setRefresh(true);
 
         for (Gare gare : items) {
             bulkRequest.add(elkClient.prepareIndex("quicky", "gare")
@@ -30,10 +31,10 @@ public class IndexGareWriter implements ItemWriter<Gare> {
                                             .startObject()
                                                 .field("nom", gare.getNom())
                                                     .startObject("geolocalisation")
-                                                    .field("pays", gare.getGeolocalistation().getPays())
-                                                    .field("ville", gare.getGeolocalistation().getVille())
-                                                    .field("latitude", gare.getGeolocalistation().getLatitude())
-                                                    .field("longitude", gare.getGeolocalistation().getLongitude())
+                                                        .field("pays", gare.getGeolocalistation().getPays())
+                                                        .field("ville", gare.getGeolocalistation().getVille())
+                                                        .field("latitude", gare.getGeolocalistation().getLatitude())
+                                                        .field("longitude", gare.getGeolocalistation().getLongitude())
                                                     .endObject()
                                                 .field("tgv", gare.isTgv())
                                             .endObject()
@@ -48,5 +49,10 @@ public class IndexGareWriter implements ItemWriter<Gare> {
         }
 
 
+    }
+
+    @Autowired
+    public void setElkClient(final ElkClientFactoryBean elkClientFactoryBean) throws Exception {
+        this.elkClient = elkClientFactoryBean.getObject();
     }
 }

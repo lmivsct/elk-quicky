@@ -18,8 +18,13 @@ public class HotelRaw {
     private String longitude;
     private String etoiles;
     private String description;
+    
+    public HotelRaw(){
+        
+    }
 
-    public HotelRaw(final String id, final String nom, final String ville, final String codePostal, final String pays, final String boost, final String residence, final String theme1, final String theme2, final String visuel, final String latitude, final String longitude, final String etoiles, final String description) {
+    public HotelRaw(final String id, final String nom, final String ville, final String codePostal, final String boost, final String residence, 
+            final String theme1, final String theme2, final String visuel, final String latitude, final String longitude, final String pays, final String etoiles, final String description) {
         this.id = id;
         this.nom = nom;
         this.ville = ville;

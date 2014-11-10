@@ -42,6 +42,7 @@ import quicky.model.HotelRaw;
 import quicky.processor.GareItemProcessor;
 import quicky.processor.HotelItemProcessor;
 import quicky.tasklet.IndexCreationTasklet;
+import quicky.tasklet.IndexValidateTasklet;
 import quicky.writer.IndexGareWriter;
 import quicky.writer.IndexHotelWriter;
 
@@ -56,9 +57,17 @@ public class BatchConfiguration {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+    @Autowired
+    private IndexCreationTasklet indexCreationTasklet;
+
+    @Autowired
+    private IndexValidateTasklet indexValidateTasklet;
+
+
     @Bean
     public ItemReader<GareRaw> gareReader() {
         FlatFileItemReader<GareRaw> reader = new FlatFileItemReader<GareRaw>();
+        reader.setEncoding("UTF-8");
         reader.setResource(new ClassPathResource("gares-data.csv"));
         reader.setLinesToSkip(1);
         reader.setLineMapper(new DefaultLineMapper<GareRaw>() {{
@@ -76,7 +85,7 @@ public class BatchConfiguration {
     @Bean
     public ItemProcessor<GareRaw, Gare> gareProcessor() {
         return new GareItemProcessor();
-    }
+    }                                                  
 
     @Bean
     public ItemWriter<Gare> gareWriter() {
@@ -86,11 +95,13 @@ public class BatchConfiguration {
     @Bean
     public ItemReader<HotelRaw> hotelReader() {
         FlatFileItemReader<HotelRaw> reader = new FlatFileItemReader<HotelRaw>();
+        reader.setEncoding("UTF-8");
         reader.setResource(new ClassPathResource("hotels-data.csv"));
         reader.setLinesToSkip(1);
         reader.setLineMapper(new DefaultLineMapper<HotelRaw>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
-                setNames(new String[]{"id", "nom", "ville", "codePostal", "pays", "boost", "residence", "theme1", "theme2", "visuel", "latitude", "longitude", "etoiles", "description"});
+                setNames(new String[]{"id", "nom", "ville", "codePostal", "boost", "residence", "theme1", "theme2", "visuel", "latitude",
+                        "longitude", "pays", "etoiles", "description"});
                 setDelimiter(";");
             }});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<HotelRaw>() {{
@@ -114,7 +125,7 @@ public class BatchConfiguration {
     @Bean
     public Step init_Step1() {
         return stepBuilderFactory.get("init_Step1")
-                .tasklet(new IndexCreationTasklet()).build();
+                .tasklet(indexCreationTasklet).build();
     }
 
     @Bean
@@ -139,12 +150,19 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Job mainJob(Step init_Step1, Step gare_Step2, Step hotel_Step3) throws Exception {
+    public Step validate_Step4() {
+        return stepBuilderFactory.get("validate_Step4")
+                .tasklet(indexValidateTasklet).build();
+    }
+
+    @Bean
+    public Job mainJob(Step init_Step1, Step gare_Step2, Step hotel_Step3, Step validate_Step4) throws Exception {
         return jobBuilderFactory.get("mainJob")
                 .incrementer(new RunIdIncrementer())
                 .start(init_Step1)
                 .next(gare_Step2)
                 .next(hotel_Step3)
+                .next(validate_Step4)
                 .build();
     }
 }

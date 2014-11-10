@@ -9,19 +9,20 @@ import org.elasticsearch.client.Client;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import quicky.client.ElkClientFactoryBean;
 import quicky.model.Hotel;
 
 
 public class IndexHotelWriter implements ItemWriter<Hotel> {
-    
-    @Autowired
+
     private Client elkClient;
-    
+
     @Override
     public void write(final List<? extends Hotel> items) throws Exception {
         System.out.println("Add Hotels in index (" + items.size() + ")...");
 
         final BulkRequestBuilder bulkRequest = elkClient.prepareBulk();
+        bulkRequest.setRefresh(true);
 
         for (Hotel hotel : items) {
             bulkRequest.add(elkClient.prepareIndex("quicky", "hotel")
@@ -54,5 +55,10 @@ public class IndexHotelWriter implements ItemWriter<Hotel> {
             System.out.println("INDEX FAILED");
         }
 
+    }
+
+    @Autowired
+    public void setElkClient(final ElkClientFactoryBean elkClientFactoryBean) throws Exception {
+        this.elkClient = elkClientFactoryBean.getObject();
     }
 }

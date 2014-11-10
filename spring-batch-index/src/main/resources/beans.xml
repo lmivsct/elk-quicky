@@ -6,6 +6,6 @@
 
     <context:component-scan base-package="quicky" />
 
-    <bean id="elkClientFactoryBean" class="quicky.client.ElkClientFactoryBean" />
-    <bean id="elkClient" factory-bean="elkClientFactoryBean" factory-method="getObject"  />
+    <bean id="indexCreationTasklet" class="quicky.tasklet.IndexCreationTasklet" />
+    <bean id="indexValidateTasklet" class="quicky.tasklet.IndexValidateTasklet" />
 </beans>
