@@ -1,2 +1,2 @@
-docker run -i -t -p 8080:80 lmivsct/elk-quicky-webapp
+docker run -i -t -p 80:8080 --volumes-from my-data lmivsct/elk-quicky-webapp
 
