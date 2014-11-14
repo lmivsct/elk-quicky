@@ -44,6 +44,10 @@ public class IndexHotelWriter implements ItemWriter<Hotel> {
                                             .field("visuel", hotel.getVisuel())
                                             .field("etoiles", hotel.getEtoiles())
                                             .field("description", hotel.getDescription())
+                                                .startObject("location")
+                                                      .field("lat", hotel.getGeolocalistation().getLatitude())
+                                                      .field("lon", hotel.getGeolocalistation().getLongitude())
+                                                .endObject()
                                             .endObject()
                             )
             );

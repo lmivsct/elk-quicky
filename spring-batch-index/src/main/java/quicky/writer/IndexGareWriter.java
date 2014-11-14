@@ -37,6 +37,10 @@ public class IndexGareWriter implements ItemWriter<Gare> {
                                                         .field("longitude", gare.getGeolocalistation().getLongitude())
                                                     .endObject()
                                                 .field("tgv", gare.isTgv())
+                                                     .startObject("location")
+                                                            .field("lat", gare.getGeolocalistation().getLatitude())
+                                                            .field("lon", gare.getGeolocalistation().getLongitude())
+                                                     .endObject()
                                             .endObject()
                             )
             );

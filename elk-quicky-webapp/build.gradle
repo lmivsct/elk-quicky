@@ -1,0 +1,21 @@
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'java'
+
+jar {
+  baseName = 'elk-quicky-webapp'
+  version = '0.1.0'
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.1'
+}

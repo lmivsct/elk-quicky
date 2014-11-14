@@ -17,7 +17,7 @@ public class GareItemProcessor implements ItemProcessor<GareRaw, Gare> {
     public Gare process(final GareRaw gareRaw) throws ParseException {
 
         final Gare transformedGare = new Gare(gareRaw.getNom(), new Geolocalisation(gareRaw.getVille(), "", gareRaw.getPays(),
-                NumberFormat.getInstance(Locale.US).parse(gareRaw.getLatitude()).floatValue(), NumberFormat.getInstance(Locale.US).parse(gareRaw
+                NumberFormat.getInstance(Locale.FRANCE).parse(gareRaw.getLatitude()).floatValue(), NumberFormat.getInstance(Locale.FRANCE).parse(gareRaw
                 .getLongitude()).floatValue()), 
                 !StringUtils.isEmpty(gareRaw.getTgv()) && gareRaw
                 .getTgv()

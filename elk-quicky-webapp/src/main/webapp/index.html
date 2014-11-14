@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr" ng-app="EsConnector">
+<head>
+    <meta charset="utf-8">
+    <title>Search Page</title>
+    <link rel="stylesheet" href="css/boostrap/bootstrap.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/elasticsearch-js/elasticsearch.min.js"></script>
+    <script src="js/elasticsearch-js/elasticsearch.angular.min.js"></script>
+    <script src="js/app.js"></script>
+
+</head>
+<body>
+<div class="container" ng-controller="QueryController">
+    <div class="row">
+
+        <form role="form" ng-submit="searchGare()">
+            <div class="form-group">
+                <label for="search">Trouver les hôtels proche d'une gare</label>
+                <input type="search" class="form-control" id="search" placeholder="Saisir une ville" ng-model="searchTerms">
+            </div>
+            <button type="submit" class="btn btn-default">Rechercher</button>
+        </form>
+        <div>
+
+            <div ng-repeat="itemGare in hitsGare">
+                {{itemGare['_source']['nom']}}
+
+                <div
+                        ng-init="searchHotel(itemGare['_source']['geolocalisation']['latitude'], itemGare['_source']['geolocalisation']['longitude'])">
+                    <table>
+                        <tr ng-repeat="itemHotel in hitsHotels">
+                            <td>{{itemHotel['_source']['nom']}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

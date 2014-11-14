@@ -18,3 +18,5 @@ hs_err_pid*
 spring-batch-index/data/
 spring-batch-index/build/
 spring-batch-index/.gradle/
+elk-quicky-webapp/build/
+elk-quicky-webapp/.gradle/
