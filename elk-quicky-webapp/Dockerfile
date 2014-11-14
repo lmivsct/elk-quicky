@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM tifayuki/java:7
 
 MAINTAINER lmivsct, https://github.com/lmivsct
 
@@ -21,6 +21,8 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
 ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
+
+RUN ln -s /tomcat/webapp /data
 
 EXPOSE 8080
 CMD ["/run.sh"]
