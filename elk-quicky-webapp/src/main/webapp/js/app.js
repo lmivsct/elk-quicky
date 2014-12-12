@@ -49,7 +49,7 @@ EsConnector.controller('QueryController', function ($scope, es) {
         // search for documents
         es.search({
             index: 'quicky',
-            size: 200,
+            size: 20000,
             type: 'hotel',
             body: {
                 "query": {
@@ -60,14 +60,25 @@ EsConnector.controller('QueryController', function ($scope, es) {
                         "filter": {
                             "geo_distance": {
                                 "distance": "20km",
-                                "hotel.location": {
+                                "location": {
                                     "lat": lat,
                                     "lon": lon
                                 }
                             }
                         }
                     }
-                }
+                },
+                "sort" : [
+                    {
+                        "_geo_distance" : {
+                            "location" : [lat, lon],
+                            "order" : "asc",
+                            "unit" : "km",
+                            "mode" : "min",
+                            "distance_type" : "arc"
+                        }
+                    }
+                ]
             }
 
         }).then(function (response) {

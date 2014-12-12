@@ -25,13 +25,13 @@
         <div>
 
             <div ng-repeat="itemGare in hitsGare">
-                {{itemGare['_source']['nom']}}
+                <strong>Gare</strong> : {{itemGare['_source']['nom']}}
 
                 <div
                         ng-init="searchHotel(itemGare['_source']['geolocalisation']['latitude'], itemGare['_source']['geolocalisation']['longitude'])">
                     <table>
                         <tr ng-repeat="itemHotel in hitsHotels">
-                            <td>{{itemHotel['_source']['nom']}}</td>
+                            <td><strong>Hotel</strong> : {{itemHotel['_source']['nom']}} - distance : {{itemHotel['sort']}}</td>
                         </tr>
                     </table>
                 </div>

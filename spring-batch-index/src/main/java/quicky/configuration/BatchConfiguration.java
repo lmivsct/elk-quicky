@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2012, vsc-technologies - www.voyages-sncf.com
- * All rights reserved.
- * 
- * Les presents codes sources sont proteges par le droit d'auteur et 
- * sont la propriete exclusive de VSC Technologies.
- * Toute representation, reproduction, utilisation, exploitation, modification, 
- * adaptation de ces codes sources sont strictement interdits en dehors 
- * des autorisations formulees expressement par VSC Technologies, 
- * sous peine de poursuites penales. 
- * 
- * Usage of this software, in source or binary form, partly or in full, and of
- * any application developed with this software, is restricted to the
- * customer.s employees in accordance with the terms of the agreement signed
- * with VSC-technologies.
- */
 package quicky.configuration;
 
 import org.springframework.batch.core.Job;
@@ -96,7 +80,7 @@ public class BatchConfiguration {
     public ItemReader<HotelRaw> hotelReader() {
         FlatFileItemReader<HotelRaw> reader = new FlatFileItemReader<HotelRaw>();
         reader.setEncoding("UTF-8");
-        reader.setResource(new ClassPathResource("hotels-data.csv"));
+        reader.setResource(new ClassPathResource("hotels-data-complete.csv"));
         reader.setLinesToSkip(1);
         reader.setLineMapper(new DefaultLineMapper<HotelRaw>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
@@ -142,7 +126,7 @@ public class BatchConfiguration {
     @Bean
     public Step hotel_Step3(ItemReader<HotelRaw> hotelReader, ItemWriter<Hotel> hotelWriter, ItemProcessor<HotelRaw, Hotel> hotelProcessor) {
         return stepBuilderFactory.get("hotel_Step3")
-                .<HotelRaw, Hotel>chunk(1000)
+                .<HotelRaw, Hotel>chunk(10000)
                 .reader(hotelReader)
                 .processor(hotelProcessor)
                 .writer(hotelWriter)
